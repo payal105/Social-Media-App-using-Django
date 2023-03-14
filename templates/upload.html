@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Post</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <form action="upload" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2><a href="/">Home</a> / Upload Pics</h2>
+            
+            <div class="content">
+                <div class="input-box">
+                    <img src="{% static 'images/upload.png' %}" height="150" width="100" alt="" style="display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: 50%;">
+                    <label for="postimg">Upload Image</label>
+                    <input type="file" name="postimg" placeholder="Choose image">
+                </div>
+            </div>
+            <div class="content">
+                <div class="input-box">
+                    <label for="caption">Caption for your post</label>
+                    <textarea name="caption"  cols="30" rows="10" placeholder="Enter caption ..."></textarea>
+                </div>
+            </div>
+            
+            
+
+            <div class="button-container">
+                <button type="submit">Upload</button>
+            </div>
+            
+        </form>
+    </div>
+</body>
+</html>

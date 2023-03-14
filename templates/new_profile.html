@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - {{user_profile.user.username}}</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css ' %}">
+ 
+    <script src="https://kit.fontawesome.com/1d5b66556a.js" crossorigin="anonymous"></script>
+    <style>
+              /* Style the Image Used to Trigger the Modal */
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  height: 300px;
+  width: 100%;
+  margin: 20px;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 50px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 20px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">SocialAdda</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        </ul>
+        <div class="dropdown">
+          <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Welcome <strong>{{user_profile.user}}</strong>&nbsp;<img src="{{user_profile.profileimg.url}} " class="profile_pic" alt="">
+
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/settings">Account Settings</a></li>
+            <li><a class="dropdown-item" href="/profile/{{user_profile.user}}">Profile</a></li>
+            <li><a class="dropdown-item" href="/upload">Upload Pics</a></li>
+            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+          </ul>
+          
+        </div>
+        <div class="dropdown">
+          <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-people-group"></i>
+
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/settings"><strong>Users you can follow</strong></a></li>
+            <hr>
+            
+            {% for suggestion in suggestions_username_profile_list %}
+            
+
+            <li>
+              <style>
+                .container {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+img {
+  width: 40px;
+ height:40px;
+  border-radius: 50%;
+}
+
+.text {
+  font-size: 20px;
+  padding-left: 20px;
+}
+              </style>
+              <div class="container">
+                <div class="image">
+                  <img href="/profile/{{suggestion.user}}" src="{{suggestion.profileimg.url}}">
+                </div>
+                <div class="text">
+                  <a href="/profile/{{suggestion.user}}">@{{suggestion.user}}</a>
+                </div>
+              </div>
+            </li>
+           {% endfor %}
+          </ul>
+          
+        </div>
+        
+        <form class="d-flex" role="search" action="/search" method="POST">
+          {% csrf_token %}
+          <input class="form-control me-2" type="text" name="username" placeholder="Search for username" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+    <div class="header__wrapper">
+        <header></header>
+        <div class="cols__container">
+            <div class="left__col">
+                <div class="img__container">
+                    <img src="{{user_profile.profileimg.url}}" alt="{{user_profile.user.username}}">
+                    <span></span>
+
+                </div>
+                <h2>{{user_profile.user.username}}</h2>
+                <p>{{user_profile.location}}</p>
+                
+
+
+                <form action="/follow" method="POST">
+                    {% csrf_token %}
+                <ul class="about">
+                    
+
+                    {% if user_post_length == 0 %}   
+                    <li><span>0</span> Post</li>
+                    {% elif  user_post_length == 1%}
+                    <li><span>{{user_post_length}}</span> Post</li>
+                    {% else %}
+                    <li><span>{{user_post_length}}</span> Posts</li>
+                    {% endif %}
+
+                    {% if user_followers == 0 %}
+                    <li><span>0</span>Follower</li>
+                    {% elif user_followers == 1 %}
+                    <li><span>{{user_followers}}</span>Follower</li>
+                    {% else %}
+                    <li><span>{{user_followers}}</span>Followers</li>
+
+
+                    {% endif %}
+
+                    {% if user_following == 0 %}
+                    <li><span>0</span>Following</li>
+                    {% elif user_following == 1 %}
+                    <li><span>{{user_following}}</span>Following</li>
+                    {% else %}
+                    <li><span>{{user_following}}</span>Following</li>
+
+
+                    {% endif %}
+                    
+                </ul>
+
+                <div class="content">
+                    <p>
+                        {{user_profile.bio}}
+                </p>
+
+                <ul>
+                    <!-- <li><i class="fab fa-twitter"></i></li>
+                    <li><i class="fab fa-pinterest"></i></li>
+                    <li><i class="fab fa-facebook"></i></li>
+                    <li><i class="fab fa-dribble"></i></li> -->
+                </ul>
+                </div>
+            </div>
+            <div class="right__col">
+                <nav>
+                    
+                    <ul>
+                        <li><a href="#posts">Posts</a></li>
+                        <li><a href="#">Followers</a></li>
+                        <li><a href="#">Following</a></li>
+                    </ul>
+
+                    <input type="hidden" value="{{user.username}}" name="follower" />
+					<input type="hidden" value="{{user_object.username}}" name="user" />
+
+                    {% if user_object.username == user.username %}
+                    <button><a href="/settings">Account Settings</a></button>
+                    {% else %}
+                    <button type="submit">{{button_text}}</button>
+                    {% endif %}
+                </form>
+                </nav>
+
+                <div class="photos" id="posts">
+                    {% for post in user_posts %}
+                    <img id="myImg" class="myImages" src="{{post.image.url}}" alt="{{post.caption}}" style="width:100%;max-width:300px">
+                    {% endfor %}
+                    <!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+  
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+  
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <script>
+        // create references to the modal...
+ var modal = document.getElementById('myModal');
+ // to all images -- note I'm using a class!
+ var images = document.getElementsByClassName('myImages');
+ // the image in the modal
+ var modalImg = document.getElementById("img01");
+ // and the caption in the modal
+ var captionText = document.getElementById("caption");
+ 
+ // Go through all of the images with our custom class
+ for (var i = 0; i < images.length; i++) {
+   var img = images[i];
+   // and attach our click listener for this image.
+   img.onclick = function(evt) {
+     modal.style.display = "block";
+     modalImg.src = this.src;
+     captionText.innerHTML = this.alt;
+   }
+ }
+ 
+ var span = document.getElementsByClassName("close")[0];
+ 
+ span.onclick = function() {
+   modal.style.display = "none";
+ }
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

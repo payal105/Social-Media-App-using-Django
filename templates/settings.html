@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2><a href="/">Home</a> / Account Setting for <b style="font-style: italic;">{{user.username}}</b></h2>
+            
+            <div class="content">
+                <div class="input-box">
+                    <img src="{{user_profile.profileimg.url}}" height="100" width="100" alt="">
+                    <label for="profileimg">Profile Image</label>
+                    <input type="file" name="image" >
+                </div>
+            </div>
+            <div class="content">
+                <div class="input-box">
+                    <label for="bio">Your Bio</label>
+                    <textarea name="bio"  cols="30" rows="10" placeholder="Enter your bio ...">{{user_profile.bio}}</textarea>
+                </div>
+            </div>
+            <div class="content">
+                <div class="input-box">
+                    <label for="location">Location</label>
+                    <input type="text" name="location" value="{{user_profile.location}}">
+                </div>
+            </div>
+            
+
+            <div class="button-container">
+                <button type="submit">Save</button>
+            </div>
+            <div class="link-btn">
+                <button ><a href="/">Cancel</a></button>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>
